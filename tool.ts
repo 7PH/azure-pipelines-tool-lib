@@ -23,7 +23,14 @@ let requestOptions = {
     allowRetries: true,
     maxRetries: 2
 } as ifm.IRequestOptions;
-tl.setResourcePath(path.join(__dirname, 'lib.json'));
+
+// lib.json may not exist in __dirname at runtime
+const libJsonPath = path.join(__dirname, 'lib.json');
+if (fs.existsSync(libJsonPath)) {
+    tl.setResourcePath(libJsonPath);
+} else {
+    tl.debug(`lib.json not found in ${__dirname}`);
+}
 
 export function debug(message: string): void {
     tl.debug(message);
